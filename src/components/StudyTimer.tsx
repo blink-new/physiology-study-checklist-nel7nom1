@@ -140,12 +140,12 @@ export function StudyTimer({ onStudyComplete }: StudyTimerProps) {
             {isBreak ? (
               <>
                 <Coffee className="h-6 w-6 text-orange-500" />
-                <span>Break Time</span>
+                <span>Время перерыва</span>
               </>
             ) : (
               <>
-                <Brain className="h-6 w-6 text-blue-500" />
-                <span>Study Session</span>
+                <Brain className="h-6 w-6 text-green-500" />
+                <span>Учебная сессия</span>
               </>
             )}
           </CardTitle>
@@ -154,14 +154,14 @@ export function StudyTimer({ onStudyComplete }: StudyTimerProps) {
           {/* Timer Display */}
           <div className="text-center">
             <div className={`text-6xl font-mono font-bold ${
-              isBreak ? 'text-orange-500' : 'text-blue-600'
+              isBreak ? 'text-orange-500' : 'text-green-600'
             }`}>
               {formatTime(timeLeft)}
             </div>
             <div className="mt-2">
               <Progress 
                 value={progress} 
-                className={`h-3 ${isBreak ? '[&>div]:bg-orange-500' : '[&>div]:bg-blue-600'}`}
+                className={`h-3 ${isBreak ? '[&>div]:bg-orange-500' : '[&>div]:bg-green-600'}`}
               />
             </div>
           </div>
@@ -169,7 +169,7 @@ export function StudyTimer({ onStudyComplete }: StudyTimerProps) {
           {/* Session Type Selector */}
           {!isRunning && !isBreak && (
             <div className="flex items-center justify-center space-x-4">
-              <label className="text-sm font-medium">Session Duration:</label>
+              <label className="text-sm font-medium">Длительность сессии:</label>
               <Select value={sessionType} onValueChange={handleSessionTypeChange}>
                 <SelectTrigger className="w-32">
                   <SelectValue />
@@ -188,23 +188,23 @@ export function StudyTimer({ onStudyComplete }: StudyTimerProps) {
             {!isRunning ? (
               <Button onClick={handleStart} size="lg" className="px-8">
                 <Play className="h-5 w-5 mr-2" />
-                Start
+                Старт
               </Button>
             ) : (
               <Button onClick={handlePause} size="lg" variant="outline" className="px-8">
                 <Pause className="h-5 w-5 mr-2" />
-                Pause
+                Пауза
               </Button>
             )}
             
             <Button onClick={handleStop} size="lg" variant="outline">
               <Square className="h-5 w-5 mr-2" />
-              Stop
+              Стоп
             </Button>
             
             <Button onClick={handleReset} size="lg" variant="outline">
               <RotateCcw className="h-5 w-5 mr-2" />
-              Reset
+              Сброс
             </Button>
           </div>
 
@@ -218,12 +218,12 @@ export function StudyTimer({ onStudyComplete }: StudyTimerProps) {
                   : 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
               }`}
             >
-              {isBreak ? 'Break Time - Relax!' : `${sessionType} Minute Study Session`}
+              {isBreak ? 'Время перерыва - Отдыхайте!' : `${sessionType}-минутная учебная сессия`}
             </Badge>
             
             {completedSessions > 0 && (
               <div className="text-sm text-gray-600 dark:text-gray-400">
-                Completed sessions today: {completedSessions}
+                Завершено сессий сегодня: {completedSessions}
               </div>
             )}
           </div>
@@ -233,26 +233,26 @@ export function StudyTimer({ onStudyComplete }: StudyTimerProps) {
       {/* Study Tips */}
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle className="text-lg">Study Tips</CardTitle>
+          <CardTitle className="text-lg">Советы по изучению</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <div className="space-y-2">
-              <h4 className="font-semibold text-blue-600 dark:text-blue-400">During Study Sessions:</h4>
+              <h4 className="font-semibold text-green-600 dark:text-green-400">Во время учебных сессий:</h4>
               <ul className="space-y-1 text-gray-600 dark:text-gray-400">
-                <li>• Focus on one topic at a time</li>
-                <li>• Take notes on key concepts</li>
-                <li>• Use active recall techniques</li>
-                <li>• Eliminate distractions</li>
+                <li>• Сосредоточьтесь на одной теме</li>
+                <li>• Делайте заметки по ключевым понятиям</li>
+                <li>• Используйте активное воспроизведение</li>
+                <li>• Устраните отвлекающие факторы</li>
               </ul>
             </div>
             <div className="space-y-2">
-              <h4 className="font-semibold text-orange-600 dark:text-orange-400">During Breaks:</h4>
+              <h4 className="font-semibold text-orange-600 dark:text-orange-400">Во время перерывов:</h4>
               <ul className="space-y-1 text-gray-600 dark:text-gray-400">
-                <li>• Step away from your desk</li>
-                <li>• Do light stretching</li>
-                <li>• Hydrate and have a snack</li>
-                <li>• Avoid screens if possible</li>
+                <li>• Отойдите от рабочего места</li>
+                <li>• Сделайте лёгкую растяжку</li>
+                <li>• Попейте воды и перекусите</li>
+                <li>• По возможности избегайте экранов</li>
               </ul>
             </div>
           </div>

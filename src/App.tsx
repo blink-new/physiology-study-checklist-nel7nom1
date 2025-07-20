@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Search, Timer, Trophy, Moon, Sun, Download, BookOpen } from 'lucide-react'
+import React, { useState, useEffect, useCallback } from 'react'
+import { Search, Timer, Trophy, Moon, Sun, Download, BookOpen, HelpCircle, Keyboard } from 'lucide-react'
 import { Button } from './components/ui/button'
 import { Input } from './components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card'
@@ -7,9 +7,11 @@ import { Progress } from './components/ui/progress'
 import { Badge } from './components/ui/badge'
 import { Switch } from './components/ui/switch'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './components/ui/tooltip'
 import { StudySection } from './components/StudySection'
 import { ProgressDashboard } from './components/ProgressDashboard'
 import { StudyTimer } from './components/StudyTimer'
+import { QuickStats } from './components/QuickStats'
 import { physiologyData } from './data/physiologyData'
 import './App.css'
 
@@ -70,19 +72,19 @@ function App() {
     }))
   }
 
-  const getTotalItems = () => {
+  const getTotalItems = useCallback(() => {
     return physiologyData.reduce((total, section) => total + section.items.length, 0)
-  }
+  }, [])
 
-  const getCompletedItems = () => {
+  const getCompletedItems = useCallback(() => {
     return Object.values(checkedItems).filter(Boolean).length
-  }
+  }, [checkedItems])
 
-  const getOverallProgress = () => {
+  const getOverallProgress = useCallback(() => {
     const total = getTotalItems()
     const completed = getCompletedItems()
     return total > 0 ? Math.round((completed / total) * 100) : 0
-  }
+  }, [getTotalItems, getCompletedItems])
 
   const filteredSections = physiologyData.map(section => ({
     ...section,
@@ -91,17 +93,19 @@ function App() {
     )
   })).filter(section => section.items.length > 0)
 
-  const exportProgress = () => {
+  const exportProgress = useCallback(() => {
     const progress = {
       totalItems: getTotalItems(),
       completedItems: getCompletedItems(),
       progress: getOverallProgress(),
       studyStreak,
       totalStudyTime,
+      exportDate: new Date().toISOString(),
       sections: physiologyData.map(section => ({
         title: section.title,
         completed: section.items.filter(item => checkedItems[item.id]).length,
-        total: section.items.length
+        total: section.items.length,
+        completionRate: Math.round((section.items.filter(item => checkedItems[item.id]).length / section.items.length) * 100)
       }))
     }
 
@@ -110,13 +114,43 @@ function App() {
     const url = URL.createObjectURL(dataBlob)
     const link = document.createElement('a')
     link.href = url
-    link.download = 'physiology-study-progress.json'
+    link.download = `physiology-study-progress-${new Date().toISOString().split('T')[0]}.json`
     link.click()
     URL.revokeObjectURL(url)
-  }
+  }, [getTotalItems, getCompletedItems, getOverallProgress, studyStreak, totalStudyTime, checkedItems])
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Ctrl/Cmd + K to focus search
+      if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+        event.preventDefault()
+        const searchInput = document.querySelector('input[placeholder="Search topics..."]') as HTMLInputElement
+        if (searchInput) {
+          searchInput.focus()
+        }
+      }
+      
+      // Ctrl/Cmd + E to export progress
+      if ((event.ctrlKey || event.metaKey) && event.key === 'e') {
+        event.preventDefault()
+        exportProgress()
+      }
+      
+      // Ctrl/Cmd + D to toggle dark mode
+      if ((event.ctrlKey || event.metaKey) && event.key === 'd') {
+        event.preventDefault()
+        setDarkMode(prev => !prev)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [exportProgress])
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'dark bg-slate-900' : 'bg-slate-50'}`}>
+    <TooltipProvider>
+      <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'dark bg-slate-900' : 'bg-slate-50'}`}>
       {/* Header */}
       <header className="bg-blue-700 dark:bg-slate-800 text-white shadow-lg">
         <div className="max-w-7xl mx-auto px-4 py-6">
@@ -137,6 +171,27 @@ function App() {
                 />
                 <Moon className="h-4 w-4" />
               </div>
+              
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-white hover:bg-white/20"
+                  >
+                    <Keyboard className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-xs">
+                  <div className="space-y-2 text-sm">
+                    <div className="font-semibold">Keyboard Shortcuts:</div>
+                    <div>⌘/Ctrl + K - Focus search</div>
+                    <div>⌘/Ctrl + E - Export progress</div>
+                    <div>⌘/Ctrl + D - Toggle dark mode</div>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+              
               <Button
                 variant="outline"
                 size="sm"
@@ -172,25 +227,39 @@ function App() {
           </TabsContent>
 
           <TabsContent value="checklist" className="space-y-6">
-            {/* Search and Stats Bar */}
-            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-              <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  placeholder="Search topics..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+            {/* Quick Stats and Search */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-1">
+                <QuickStats
+                  totalItems={getTotalItems()}
+                  completedItems={getCompletedItems()}
+                  overallProgress={getOverallProgress()}
+                  studyStreak={studyStreak}
+                  totalStudyTime={totalStudyTime}
                 />
               </div>
-              <div className="flex items-center space-x-4">
-                <Badge variant="secondary" className="text-sm">
-                  <Trophy className="h-4 w-4 mr-1" />
-                  {studyStreak} day streak
-                </Badge>
-                <Badge variant="outline" className="text-sm">
-                  {getCompletedItems()}/{getTotalItems()} completed
-                </Badge>
+              <div className="lg:col-span-2 space-y-4">
+                {/* Search and Stats Bar */}
+                <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                  <div className="relative flex-1 max-w-md">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                    <Input
+                      placeholder="Search topics..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <Badge variant="secondary" className="text-sm">
+                      <Trophy className="h-4 w-4 mr-1" />
+                      {studyStreak} day streak
+                    </Badge>
+                    <Badge variant="outline" className="text-sm">
+                      {getCompletedItems()}/{getTotalItems()} completed
+                    </Badge>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -246,6 +315,7 @@ function App() {
         </Tabs>
       </div>
     </div>
+    </TooltipProvider>
   )
 }
 

@@ -141,7 +141,7 @@ function StudyItem({
         size="sm"
         onClick={onOpenNotes}
         className={`p-1 h-auto ${hasNote ? 'text-yellow-600 hover:text-yellow-700' : 'text-gray-400 hover:text-gray-600'}`}
-        title={hasNote ? 'View/Edit Notes' : 'Add Notes'}
+        title={hasNote ? 'Просмотр/Редактирование заметок' : 'Добавить заметки'}
       >
         <StickyNote className={`h-4 w-4 ${hasNote ? 'fill-current' : ''}`} />
       </Button>

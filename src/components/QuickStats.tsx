@@ -32,11 +32,11 @@ export function QuickStats({
   }
 
   const getMotivationalMessage = () => {
-    if (overallProgress >= 100) return "🎉 Physiology Master!"
-    if (overallProgress >= 75) return "🔥 Almost there!"
-    if (overallProgress >= 50) return "💪 Great progress!"
-    if (overallProgress >= 25) return "🌟 Keep going!"
-    return "🚀 Let's start studying!"
+    if (overallProgress >= 100) return "🎉 Мастер физиологии!"
+    if (overallProgress >= 75) return "🔥 Почти готово!"
+    if (overallProgress >= 50) return "💪 Отличный прогресс!"
+    if (overallProgress >= 25) return "🌟 Продолжайте!"
+    return "🚀 Начнём изучение!"
   }
 
   const getProgressColor = () => {
@@ -50,11 +50,11 @@ export function QuickStats({
   const averageSessionTime = totalStudyTime > 0 && studyStreak > 0 ? Math.round(totalStudyTime / studyStreak) : 0
 
   return (
-    <Card className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-800 dark:to-slate-900 border-blue-200 dark:border-slate-700">
+    <Card className="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-slate-800 dark:to-slate-900 border-green-200 dark:border-slate-700">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center justify-between">
-          <span className="text-lg font-semibold text-blue-800 dark:text-blue-200">
-            Study Overview
+          <span className="text-lg font-semibold text-green-800 dark:text-green-200">
+            Обзор изучения
           </span>
           <Badge variant="secondary" className={`${getProgressColor()} font-bold`}>
             {overallProgress}%
@@ -73,8 +73,8 @@ export function QuickStats({
         {/* Progress Bar */}
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-600 dark:text-gray-400">Progress</span>
-            <span className="font-medium">{completedItems}/{totalItems} topics</span>
+            <span className="text-gray-600 dark:text-gray-400">Прогресс</span>
+            <span className="font-medium">{completedItems}/{totalItems} тем</span>
           </div>
           <Progress value={overallProgress} className="h-3" />
         </div>
@@ -84,37 +84,37 @@ export function QuickStats({
           <div className="bg-white/60 dark:bg-slate-800/60 rounded-lg p-3 text-center">
             <div className="flex items-center justify-center mb-1">
               <Calendar className="h-4 w-4 text-orange-600 mr-1" />
-              <span className="text-xs text-gray-600 dark:text-gray-400">Streak</span>
+              <span className="text-xs text-gray-600 dark:text-gray-400">Серия</span>
             </div>
             <div className="text-lg font-bold text-orange-600">{studyStreak}</div>
-            <div className="text-xs text-gray-500">days</div>
+            <div className="text-xs text-gray-500">дней</div>
           </div>
 
           <div className="bg-white/60 dark:bg-slate-800/60 rounded-lg p-3 text-center">
             <div className="flex items-center justify-center mb-1">
               <Clock className="h-4 w-4 text-green-600 mr-1" />
-              <span className="text-xs text-gray-600 dark:text-gray-400">Study Time</span>
+              <span className="text-xs text-gray-600 dark:text-gray-400">Время</span>
             </div>
             <div className="text-lg font-bold text-green-600">{formatStudyTime(totalStudyTime)}</div>
-            <div className="text-xs text-gray-500">total</div>
+            <div className="text-xs text-gray-500">всего</div>
           </div>
 
           <div className="bg-white/60 dark:bg-slate-800/60 rounded-lg p-3 text-center">
             <div className="flex items-center justify-center mb-1">
               <StickyNote className="h-4 w-4 text-yellow-600 mr-1" />
-              <span className="text-xs text-gray-600 dark:text-gray-400">Notes</span>
+              <span className="text-xs text-gray-600 dark:text-gray-400">Заметки</span>
             </div>
             <div className="text-lg font-bold text-yellow-600">{notesCount}</div>
-            <div className="text-xs text-gray-500">topics</div>
+            <div className="text-xs text-gray-500">тем</div>
           </div>
 
           <div className="bg-white/60 dark:bg-slate-800/60 rounded-lg p-3 text-center">
             <div className="flex items-center justify-center mb-1">
               <TrendingUp className="h-4 w-4 text-purple-600 mr-1" />
-              <span className="text-xs text-gray-600 dark:text-gray-400">Est. Left</span>
+              <span className="text-xs text-gray-600 dark:text-gray-400">Осталось</span>
             </div>
             <div className="text-lg font-bold text-purple-600">{formatStudyTime(estimatedTimeRemaining)}</div>
-            <div className="text-xs text-gray-500">to finish</div>
+            <div className="text-xs text-gray-500">до конца</div>
           </div>
         </div>
 
@@ -124,7 +124,7 @@ export function QuickStats({
             <div className="flex items-center justify-between text-sm">
               <div className="flex items-center">
                 <Zap className="h-4 w-4 text-blue-600 mr-2" />
-                <span className="text-gray-600 dark:text-gray-400">Avg. Session</span>
+                <span className="text-gray-600 dark:text-gray-400">Средняя сессия</span>
               </div>
               <span className="font-medium text-blue-600">{formatStudyTime(averageSessionTime)}</span>
             </div>
@@ -137,7 +137,7 @@ export function QuickStats({
             <div className="flex items-center justify-between text-sm">
               <div className="flex items-center">
                 <Target className="h-4 w-4 text-indigo-600 mr-2" />
-                <span className="text-gray-600 dark:text-gray-400">Next Milestone</span>
+                <span className="text-gray-600 dark:text-gray-400">Следующая цель</span>
               </div>
               <span className="font-medium text-indigo-600">
                 {overallProgress < 25 ? '25%' : 

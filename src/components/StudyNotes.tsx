@@ -52,8 +52,8 @@ export function StudyNotes({ itemId, itemText, isOpen, onClose }: StudyNotesProp
           <div className="flex-1 pr-4">
             <CardTitle className="flex items-center space-x-2 text-lg">
               <StickyNote className="h-5 w-5 text-yellow-600" />
-              <span>Study Notes</span>
-              {hasNote && <Badge variant="secondary" className="text-xs">Has Note</Badge>}
+              <span>Заметки по теме</span>
+              {hasNote && <Badge variant="secondary" className="text-xs">Есть заметка</Badge>}
             </CardTitle>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 line-clamp-3">
               {itemText}
@@ -69,11 +69,11 @@ export function StudyNotes({ itemId, itemText, isOpen, onClose }: StudyNotesProp
             <div className="text-center py-8">
               <StickyNote className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <p className="text-gray-500 dark:text-gray-400 mb-4">
-                No notes yet for this topic
+                Пока нет заметок по этой теме
               </p>
               <Button onClick={() => setIsEditing(true)}>
                 <Edit3 className="h-4 w-4 mr-2" />
-                Add Note
+                Добавить заметку
               </Button>
             </div>
           ) : !isEditing ? (
@@ -86,10 +86,10 @@ export function StudyNotes({ itemId, itemText, isOpen, onClose }: StudyNotesProp
               <div className="flex space-x-2">
                 <Button onClick={() => setIsEditing(true)} variant="outline" size="sm">
                   <Edit3 className="h-4 w-4 mr-2" />
-                  Edit
+                  Редактировать
                 </Button>
                 <Button onClick={handleDelete} variant="outline" size="sm" className="text-red-600 hover:text-red-700">
-                  Delete Note
+                  Удалить заметку
                 </Button>
               </div>
             </div>
@@ -98,21 +98,21 @@ export function StudyNotes({ itemId, itemText, isOpen, onClose }: StudyNotesProp
               <Textarea
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                placeholder="Add your study notes, key points, mnemonics, or questions about this topic..."
+                placeholder="Добавьте свои заметки, ключевые моменты, мнемоники или вопросы по этой теме..."
                 className="min-h-[200px] resize-none"
                 autoFocus
               />
               <div className="flex space-x-2">
                 <Button onClick={handleSave}>
                   <Save className="h-4 w-4 mr-2" />
-                  Save Note
+                  Сохранить заметку
                 </Button>
                 <Button onClick={() => setIsEditing(false)} variant="outline">
-                  Cancel
+                  Отмена
                 </Button>
                 {hasNote && (
                   <Button onClick={handleDelete} variant="outline" className="text-red-600 hover:text-red-700">
-                    Delete Note
+                    Удалить заметку
                   </Button>
                 )}
               </div>

@@ -28,22 +28,22 @@ export function ProgressDashboard({
     const hours = Math.floor(minutes / 60)
     const mins = minutes % 60
     if (hours > 0) {
-      return `${hours}h ${mins}m`
+      return `${hours}ч ${mins}м`
     }
-    return `${mins}m`
+    return `${mins}м`
   }
 
   const getAchievements = () => {
     const achievements = []
     
-    if (completedItems >= 10) achievements.push({ name: 'First Steps', icon: '🎯', description: 'Completed 10 topics' })
-    if (completedItems >= 25) achievements.push({ name: 'Quarter Master', icon: '🏆', description: 'Completed 25 topics' })
-    if (completedItems >= 50) achievements.push({ name: 'Half Way There', icon: '🌟', description: 'Completed 50 topics' })
-    if (overallProgress >= 100) achievements.push({ name: 'Physiology Master', icon: '👑', description: 'Completed all topics' })
-    if (studyStreak >= 7) achievements.push({ name: 'Week Warrior', icon: '🔥', description: '7 day study streak' })
-    if (studyStreak >= 30) achievements.push({ name: 'Monthly Master', icon: '💎', description: '30 day study streak' })
-    if (totalStudyTime >= 60) achievements.push({ name: 'Study Enthusiast', icon: '📚', description: '1+ hour of study time' })
-    if (totalStudyTime >= 300) achievements.push({ name: 'Dedicated Scholar', icon: '🎓', description: '5+ hours of study time' })
+    if (completedItems >= 10) achievements.push({ name: 'Первые шаги', icon: '🎯', description: 'Изучено 10 тем' })
+    if (completedItems >= 25) achievements.push({ name: 'Четверть пути', icon: '🏆', description: 'Изучено 25 тем' })
+    if (completedItems >= 50) achievements.push({ name: 'Половина пути', icon: '🌟', description: 'Изучено 50 тем' })
+    if (overallProgress >= 100) achievements.push({ name: 'Мастер физиологии', icon: '👑', description: 'Изучены все темы' })
+    if (studyStreak >= 7) achievements.push({ name: 'Недельный воин', icon: '🔥', description: '7 дней подряд' })
+    if (studyStreak >= 30) achievements.push({ name: 'Месячный мастер', icon: '💎', description: '30 дней подряд' })
+    if (totalStudyTime >= 60) achievements.push({ name: 'Энтузиаст', icon: '📚', description: '1+ час изучения' })
+    if (totalStudyTime >= 300) achievements.push({ name: 'Преданный ученик', icon: '🎓', description: '5+ часов изучения' })
     
     return achievements
   }
@@ -73,13 +73,13 @@ export function ProgressDashboard({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Overall Progress</CardTitle>
-            <Target className="h-4 w-4 text-blue-600" />
+            <CardTitle className="text-sm font-medium">Общий прогресс</CardTitle>
+            <Target className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">{overallProgress}%</div>
+            <div className="text-2xl font-bold text-green-600">{overallProgress}%</div>
             <p className="text-xs text-gray-600 dark:text-gray-400">
-              {completedItems} of {totalItems} topics
+              {completedItems} из {totalItems} тем
             </p>
             <Progress value={overallProgress} className="mt-2 h-2" />
           </CardContent>
@@ -87,39 +87,39 @@ export function ProgressDashboard({
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Study Streak</CardTitle>
+            <CardTitle className="text-sm font-medium">Серия изучения</CardTitle>
             <Trophy className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-orange-600">{studyStreak}</div>
             <p className="text-xs text-gray-600 dark:text-gray-400">
-              {studyStreak === 1 ? 'day' : 'days'} in a row
+              {studyStreak === 1 ? 'день' : studyStreak < 5 ? 'дня' : 'дней'} подряд
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Study Time</CardTitle>
+            <CardTitle className="text-sm font-medium">Время изучения</CardTitle>
             <Clock className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">{formatStudyTime(totalStudyTime)}</div>
             <p className="text-xs text-gray-600 dark:text-gray-400">
-              total study time
+              общее время
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Est. Time Left</CardTitle>
+            <CardTitle className="text-sm font-medium">Осталось времени</CardTitle>
             <TrendingUp className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-purple-600">{formatStudyTime(estimatedTimeRemaining)}</div>
             <p className="text-xs text-gray-600 dark:text-gray-400">
-              to complete all topics
+              до завершения всех тем
             </p>
           </CardContent>
         </Card>
@@ -131,7 +131,7 @@ export function ProgressDashboard({
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Award className="h-5 w-5 text-yellow-600" />
-              <span>Achievements</span>
+              <span>Достижения</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -161,8 +161,8 @@ export function ProgressDashboard({
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
-            <BookOpen className="h-5 w-5 text-blue-600" />
-            <span>Section Progress</span>
+            <BookOpen className="h-5 w-5 text-green-600" />
+            <span>Прогресс по разделам</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
