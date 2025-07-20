@@ -62,6 +62,18 @@ export function StudyGoals({ completedItems, totalItems }: StudyGoalsProps) {
     )
   }, [completedItems])
 
+  const resetForm = () => {
+    setFormData({
+      title: '',
+      description: '',
+      targetDate: '',
+      targetTopics: '',
+      priority: 'medium'
+    })
+    setEditingGoal(null)
+    setIsDialogOpen(false)
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     
@@ -84,18 +96,6 @@ export function StudyGoals({ completedItems, totalItems }: StudyGoalsProps) {
     }
 
     resetForm()
-  }
-
-  const resetForm = () => {
-    setFormData({
-      title: '',
-      description: '',
-      targetDate: '',
-      targetTopics: '',
-      priority: 'medium'
-    })
-    setEditingGoal(null)
-    setIsDialogOpen(false)
   }
 
   const handleEdit = (goal: StudyGoal) => {

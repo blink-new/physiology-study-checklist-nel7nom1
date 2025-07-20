@@ -12,6 +12,7 @@ import { StudySection } from './components/StudySection'
 import { ProgressDashboard } from './components/ProgressDashboard'
 import { StudyTimer } from './components/StudyTimer'
 import { QuickStats } from './components/QuickStats'
+import { StudyGoals } from './components/StudyGoals'
 import { physiologyData } from './data/physiologyData'
 import './App.css'
 
